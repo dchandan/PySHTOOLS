@@ -8,7 +8,6 @@ subroutine PLegendreA(p, lmax, z, csphase)
 !		IN
 !			lmax:		Maximum spherical harmonic degree to compute.
 !			z:		[-1, 1], cos(colatitude) or sin(latitude).
-!		OPTIONAL (IN)
 !			csphase:	1: Do not include the phase factor of (-1)^m
 !					-1: Apply the phase factor of (-1)^m.
 !		OUT
@@ -25,8 +24,6 @@ subroutine PLegendreA(p, lmax, z, csphase)
 !
 !	August 14, 2012. 	Converted PHASE from REAL*8 to INTEGER*1.
 !
-!	Dependencies:	CSPHASE_DEFAULT
-!
 !	Written by Mark Wieczorek 2003
 !
 !	Copyright (c) 2005-2012, Mark A. Wieczorek
@@ -34,50 +31,21 @@ subroutine PLegendreA(p, lmax, z, csphase)
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 
-	use SHTOOLS, only: CSPHASE_DEFAULT
-
 	implicit none
-	integer, intent(in) ::	lmax
+	integer, intent(in) ::	lmax, csphase
 	real*8, intent(out) ::	p((lmax+1)*(lmax+2)/2)
    	real*8, intent(in)  ::	z
-   	integer, intent(in), optional ::	csphase
+	
    	real*8              ::	pm2, pm1, pmm, sinsq, sinsqr, fact, plm
   	integer             ::	k, kstart, m, l
-  	integer*1           ::	phase
 	
 	if (size(p) < (lmax+1)*(lmax+2)/2) then 
 		print*, "Error --- PLegendreA"
-     		print*, "P must be dimensioned as (LMAX+1)*(LMAX+2)/2 where LMAX is ", lmax
-     		print*, "Input array is dimensioned ", size(p)
-     		stop
-     	elseif (lmax < 0) then 
-     		print*, "Error --- PLegendreA"
-     		print*, "LMAX must be greater than or equal to 0."
-     		print*, "Input value is ", lmax
-     		stop
-     	elseif(abs(z) > 1.0d0) then
-     		print*, "Error --- PLegendreA"
-     		print*, "ABS(Z) must be less than or equal to 1."
-     		print*, "Input value is ", z
-     		stop
-     	endif
-     	
+ 		print*, "P must be dimensioned as (LMAX+1)*(LMAX+2)/2 where LMAX is ", lmax
+ 		print*, "Input array is dimensioned ", size(p)
+ 		stop
+	endif
      	     	
-     	if (present(csphase)) then
-     		if (csphase == -1) then
-     			phase = -1
-     		elseif (csphase == 1) then
-     			phase = 1
-     		else
-     			print*, "PLegendreA --- Error"
-     			print*, "CSPHASE must be 1 (exclude) or -1 (include)."
-     			print*, "Input value is ", csphase
-     			stop
-     		endif
-     	else
-     		phase = CSPHASE_DEFAULT
-     	endif
-     	
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!	
 	!	Calculate P(l,0)
@@ -120,7 +88,7 @@ subroutine PLegendreA(p, lmax, z, csphase)
 		! Calculate P(m,m)
         	kstart = kstart+m+1
          	fact = fact+2.0d0
-        	pmm = phase * pmm * sinsqr * fact
+        	pmm = csphase * pmm * sinsqr * fact
         	p(kstart) = pmm
         	pm2 = pmm
 
@@ -143,7 +111,7 @@ subroutine PLegendreA(p, lmax, z, csphase)
       	! P(lmax, lmax)
       	kstart    = kstart+m+1
         fact      = fact+2.0d0
-        pmm       = phase * pmm * sinsqr * fact
+        pmm       = csphase * pmm * sinsqr * fact
         p(kstart) = pmm
 	
 end subroutine PLegendreA

@@ -1,5 +1,5 @@
 import sys
-sys.path.append("../src")
+sys.path.append("../")
 
 from legendre import *
 import numpy as np

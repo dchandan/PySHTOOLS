@@ -25,6 +25,5 @@ def LimitBandwidth(grid, lmax, lmin=0, norm=4, csphase=1):
     cilm = SHExpandDH(grid, lmax)
     if (lmin > 0):
         for i in range(lmin+1):
-            print i
             cilm[:,i,:] = 0.0
     return MakeGrid2D(cilm, 181, 361)

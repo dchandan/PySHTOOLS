@@ -29,23 +29,6 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, py_m, py_n, north, south, east
 	
 
     
- 	if (size(grid(:,1)) < nlat .or. size(grid(1,:)) < nlong ) then
-		print*, "Error --- MakeGrid2D"
-		print*, "GRID must be dimensioned ( (LATMAX-LATMIN)/INTERVAL+1, (LONGMAX-LONGMIN)/INTERVAL+1 ) where"
-		print*, "INTERVAL = ", interval
-		print*, "LATMAX = ", latmax
-		print*, "LATMIN = ", latmin
-		print*, "LONGMIN = ", longmin
-		print*, "LONGMAX = ", longmax
-		print*, "Input array is dimensioned ", size(grid(:,1)), size(grid(1,:))
-		stop
-	elseif (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax+1 .or. size(cilm(1,1,:)) < lmax+1) then
-		print*, "Error --- MakeGrid2D"
-		print*, "CILM must be dimensioned as (2, LMAX+1, LMAX+1) where LMAX is ", lmax
-		print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
-		stop
-	endif
-	
 	if ((present(f) .and. .not. present(a)) .or. (present(a) .and. .not. present(f)) ) then
 		print*, "Error --- MakeGrid2D"
 		print*, "Both F and A must be present"
@@ -168,5 +151,3 @@ subroutine MakeGrid2D(grid, cilm, lmax, interval, py_m, py_n, north, south, east
 	deallocate(sinm)
 	deallocate(cilm2)
 end subroutine MakeGrid2D
-
-

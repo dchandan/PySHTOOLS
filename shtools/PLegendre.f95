@@ -36,20 +36,10 @@ subroutine PLegendre(p, lmax, z)
 
 	if(size(p) < lmax+1) then
 		print*, "Error --- PlegendreL"
-     		print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax 
-     		print*, "Input array is dimensioned ", size(p)
-     		stop
-     	elseif (lmax < 0) then 
-     		print*, "Error --- PlegendreL"
-     		print*, "LMAX must be greater than or equal to 0."
-     		print*, "Input value is ", lmax
-     		stop
-     	elseif(abs(z) > 1.0d0) then
-     		print*, "Error --- PlegendreL"
-     		print*, "ABS(Z) must be less than or equal to 1."
-     		print*, "Input value is ", z
-     		stop
-     	endif
+ 		print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax 
+ 		print*, "Input array is dimensioned ", size(p)
+ 		stop
+	endif
       	
    	pm2  = 1.d0
       	p(1) = 1.d0
@@ -104,32 +94,22 @@ subroutine PLegendre_d1(p, dp, lmax, z)
 	implicit none
 	integer, intent(in) ::	lmax
 	real*8, intent(out) ::	p(:), dp(:)
-       	real*8, intent(in) ::	z
-       	real*8 ::	pm2, pm1, pl, sinsq
-      	integer ::	l
+   	real*8, intent(in) ::	z
+   	real*8 ::	pm2, pm1, pl, sinsq
+  	integer ::	l
 
 	
 	if (size(p) < lmax+1) then
 		print*, "Error --- PLegendre_d1"
-     		print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax 
-     		print*, "Input array is dimensioned ", size(p)
-     		stop
-     	elseif (size(dp) < lmax+1) then
+ 		print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax 
+ 		print*, "Input array is dimensioned ", size(p)
+ 		stop
+ 	elseif (size(dp) < lmax+1) then
 		print*, "Error --- PLegendre_d1"
-     		print*, "DP must be dimensioned as (LMAX+1) where LMAX is ", lmax 
-     		print*, "Input array is dimensioned ", size(dp)
-     		stop
-     	elseif (lmax < 0) then 
-     		print*, "Error --- PLegendre_d1"
-     		print*, "LMAX must be greater than or equal to 0."
-     		print*, "Input value is ", lmax
-     		stop
-     	elseif(abs(z) > 1.0d0) then
-     		print*, "Error --- PLegendre_d1"
-     		print*, "ABS(Z) must be less than or equal to 1."
-     		print*, "Input value is ", z
-     		stop
-     	endif
+ 		print*, "DP must be dimensioned as (LMAX+1) where LMAX is ", lmax 
+ 		print*, "Input array is dimensioned ", size(dp)
+ 		stop
+	endif
       	     	
       	if (z == 1.0d0) then
       	

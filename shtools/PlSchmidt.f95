@@ -35,20 +35,10 @@ subroutine PlSchmidt(p, lmax, z)
 
 	if (size(p) < lmax+1) then
 		print*, "Error --- PlSchmidt"
-     		print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax 
-     		print*, "Input array is dimensioned ", size(p)
-     		stop
-     	elseif (lmax < 0) then 
-     		print*, "Error --- PlSchmidt"
-     		print*, "LMAX must be greater than or equal to 0."
-     		print*, "Input value is ", lmax
-     		stop
-     	elseif(abs(z) > 1.0d0) then
-     		print*, "Error --- PlSchmidt"
-     		print*, "ABS(Z) must be less than or equal to 1."
-     		print*, "Input value is ", z
-     		stop
-     	endif
+ 		print*, "P must be dimensioned as (LMAX+1) where LMAX is ", lmax 
+ 		print*, "Input array is dimensioned ", size(p)
+ 		stop
+	endif
      	
    	pm2  = 1.d0
       	p(1) = 1.d0

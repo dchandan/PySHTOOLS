@@ -5,7 +5,7 @@ import matplotlib as mpl
 import matplotlib.pylab as plt
 from mypy.grid_toolkit import shiftgrid
 
-from PySHTOOLS import SHExpandDH, MakeGrid2D
+from PySHTOOLS import SHExpandDH, MakeGridDH
 
 from __init__ import *
 
@@ -15,9 +15,10 @@ def test1():
 
     data = np.loadtxt(join(test_dir, "dyntopoC2E5_l1-22.txt"))
 
+    _deg = 8
+    cilm = SHExpandDH(data[:-1,:-1], _deg)
+    grid = MakeGridDH(cilm, _deg)
 
-    cilm = SHExpandDH(data[:-1,:-1], 8)
-    grid = MakeGrid2D(cilm, 181, 361)
     a, b = grid.shape
     latitudes      = np.linspace(90, -90, a)
     centeredLons   = np.linspace(-180, 180, b)
@@ -44,18 +45,7 @@ def test1():
     Map.drawparallels([-60,-30,0,30,60],labels=[1,1,1,1],fontsize=18)
 
 
-def test2():
-    data = periodic2D(50, 100, 3, 4)
-    cilm = SHExpandDH(data, 5)
-    grid = MakeGrid2D(cilm, 51, 101)
-    a, b = grid.shape
-    plt.figure()
-    plt.imshow(grid)
-    # plt.show()
-
 if __name__ =="__main__":
     print("Test 1")
     test1()
-    print("Test 2")
-    test2()
     plt.show()

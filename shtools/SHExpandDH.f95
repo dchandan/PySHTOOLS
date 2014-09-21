@@ -1,46 +1,33 @@
-subroutine SHExpandDH(grid, py_m, py_n, n, lmax_calc, py_lmax, cilm, lmax, norm, sampling, csphase)
+subroutine SHExpandDH(grid, py_m, py_n, lmax_calc, py_lmax, cilm, lmax, norm, sampling, csphase)
 	!                 in     in    in   in    in        in      out   out   in    in         in
 	use FFTW3
-	use SHTOOLS, only: DHaj, CSPHASE_DEFAULT
+	use SHTOOLS, only: DHaj
 		
 	implicit none
 	
-	integer, intent(in)  ::	n, py_m, py_n, py_lmax, lmax_calc
+	integer, intent(in)  ::	py_m, py_n, py_lmax, lmax_calc
 	real*8, intent(in)   ::	grid(py_m, py_n)
 	real*8, intent(out)  ::	cilm(2, py_lmax+1, py_lmax+1)
 	integer, intent(out) ::	lmax
 	integer, intent(in), optional :: norm, sampling, csphase
 	
-	complex*16           ::	cc(n+1)
-	integer              ::	l, m, i, l1, m1, i_eq, i_s, astat(4), lmax_comp, nlong
+	complex*16           ::	cc(py_m+1)
+	integer              ::	l, m, n, i, l1, m1, i_eq, i_s, astat(4), lmax_comp, nlong
 	integer*8            ::	plan
-	real*8               ::	pi, gridl(2*n), aj(n), fcoef1(2, n/2+1), fcoef2(2, n/2+1)
+	real*8               ::	pi, gridl(2*py_m), aj(py_m), fcoef1(2, py_m/2+1), fcoef2(2, py_m/2+1)
 	real*8               ::	theta, prod, scalef, rescalem, u, p, pmm, pm1, pm2, z, ffc(1:2,-1:1)
 	
 	real*8,    save, allocatable ::	sqr(:), ff1(:,:), ff2(:,:)
 	integer*1, save, allocatable ::	fsymsign(:,:)
 	integer, save                ::	lmax_old=0, norm_old = 0
 	
-	lmax = n/2 - 1	
+	
+	n     = py_m
+	lmax  = py_m/2 - 1
+	nlong = py_n
 	
 	lmax_comp = min(lmax, lmax_calc)
-	
-	if (mod(n,2) /=0) then
-		print*, "Error --- SHExpandDH"
-		print*, "The number of samples in latitude and longitude, n, must be even."
-		print*, "Input value is ", n
-		stop
-	elseif (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) <  lmax_comp+1 .or. &
-			size(cilm(1,1,:)) < lmax_comp+1) then
-		print*, "Error --- SHExpandDH"
-		print*, "CILM must be dimensioned as (2, LMAX_COMP+1, LMAX_COMP+1) where"
-		print*, "LMAX_COMP = MIN(N/2, LMAX_CALC+1)"
-		print*, "N = ", n
-! 		if (present(lmax_calc)) print*, "LMAX_CALC = ", lmax_calc
-		print*, "Input dimension is ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
-		stop
-	endif
-	
+		
 	pi = acos(-1.0d0)
 	
 	cilm = 0.0d0
@@ -50,12 +37,6 @@ subroutine SHExpandDH(grid, py_m, py_n, n, lmax_calc, py_lmax, cilm, lmax, norm,
 	call DHaj(n, aj)
 	aj(1:n) = aj(1:n)*sqrt(4.0d0*pi) 	! Driscoll and Heally use unity normalized spherical harmonics
 	
-	if (sampling == 1) then
-		nlong = n
-	else
-		nlong = 2*n
-	endif
-
 	!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	!
 	!	Calculate recursion constants used in computing the Legendre polynomials

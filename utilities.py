@@ -5,10 +5,16 @@ class PySHTOOLSError(Exception):
 
 
 class InvalidNormalization(PySHTOOLSError):
+    """ This error is raised when the normalization of
+    Legendre polynomials is not correct. 
+    """
     def __init__(self):
         pass
 
 class InvalidPhaseFactor(PySHTOOLSError):
+    """ This error is raised when the CSPHASE factor does not
+    have the correct value. 
+    """
     def __init__(self):
         pass
 
@@ -24,6 +30,10 @@ class CILMShapeError(PySHTOOLSError):
     def __init__(self):
         pass
 
+class DegreeError(PySHTOOLSError):
+    def __init__(self):
+        pass
+    
 
 def CheckNorm(n):
     if (n > 4) or (n < 1):
@@ -39,6 +49,7 @@ def CheckCSphase(l):
         print("CSPHASE must be 1 (exclude) or -1 (include)")
         print("Received CSPHASE = {0}".format(l))
         raise InvalidPhaseFactor()
+
 
 def CheckSampling1(n):
     if not ((n == 1) or (n == 2)):
@@ -64,6 +75,14 @@ def CheckSampling2(n, tple):
 
 
 def CheckCILM(s, l=None):
+    """
+    Checks that the CILM array has proper dimensions. 
+    ARGUMENTS
+        s = 3-tuple that is the shape of the CILM array
+        l = spherical harmonic degree. 
+            If provided, CILM is checked to be of shape (2,l+1,l+1)
+            otherwise, CILM is check to be of shape (2,(2d square array))
+    """
     if l is not None:
         if not ((s[0] == 2) and (s[1] == l+1) and (s[2] == l+1)):
             print("ERROR !!!")
@@ -76,7 +95,19 @@ def CheckCILM(s, l=None):
             print("CILM array should be of shape (2, l+1, l+1)")
             print("Received shape is ({0}, {1}, {2})".format(s[0],s[1],s[2]))
             raise CILMShapeError()
-        
+
+
+def CheckLmaxNotNegative(l):
+    if (l < 0):
+        print("ERROR !!!")
+        print("LMAX cannot be less than 0. Value received: {0}".format(l))
+        raise DegreeError()
+
+def CheckPlmZ(z):
+    if (abs(z) > 1.0):
+        print("ERROR !!!")
+        print("Absolute value of Z argument to Legendre Polynomials must be <= 1.0")
+        raise PySHTOOLSError()
 
 # if __name__ == "__main__":
     # CheckSampling2(3, (180,360))

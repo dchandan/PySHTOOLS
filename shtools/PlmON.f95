@@ -23,7 +23,6 @@ subroutine PlmON(p, lmax, z, csphase, cnorm)
 !		OUT
 !			p:		A vector of all associated Legendgre polynomials evaluated at 
 !					z up to lmax. The length must by greater or equal to (lmax+1)*(lmax+2)/2.
-!		OPTIONAL (IN)
 !			csphase:	1: Do not include the phase factor of (-1)^m
 !					-1: Apply the phase factor of (-1)^m.
 !			cnorm:		0: Use real normalization.
@@ -44,8 +43,6 @@ subroutine PlmON(p, lmax, z, csphase, cnorm)
 !	4. 	The default is to exclude the Condon-Shortley phase of (-1)^m.
 !
 !
-!	Dependencies:	CSPHASE_DEFAULT
-!
 !	Written by Mark Wieczorek September 25, 2005.
 !
 !	April 19, 2008: Added CNORM optional parameter compute complex normalized functions.
@@ -58,19 +55,16 @@ subroutine PlmON(p, lmax, z, csphase, cnorm)
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!	
 
-	use SHTOOLS, only: CSPHASE_DEFAULT
-
 	implicit none
-	integer, intent(in) ::	lmax
+	integer, intent(in) ::	lmax, csphase
 	real*8, intent(out) ::	p((lmax+1)*(lmax+2)/2)
     real*8, intent(in)  ::	z
+    integer, intent(in), optional :: cnorm
 	
-    integer, intent(in), optional :: csphase, cnorm
     real*8              ::	pm2, pm1, pmm, plm, rescalem, pi, u, scalef
     real*8, save, allocatable ::	f1(:), f2(:), sqr(:)
     integer             ::	k, kstart, m, l, astat(3)
     integer, save       ::	lmax_old = 0
-    integer*1           ::	phase
 
 	if (lmax == -1) then
 		if (allocated(sqr)) deallocate(sqr)
@@ -84,35 +78,11 @@ subroutine PlmON(p, lmax, z, csphase, cnorm)
 	
 	if (size(p) < (lmax+1)*(lmax+2)/2) then 
 		print*, "Error --- PlmBar"
-     		print*, "P must be dimensioned as (LMAX+1)*(LMAX+2)/2 where LMAX is ", lmax
-     		print*, "Input array is dimensioned ", size(p)
-     		stop
-     	elseif (lmax < 0) then 
-     		print*, "Error --- PlmBar"
-     		print*, "LMAX must be greater than or equal to 0."
-     		print*, "Input value is ", lmax
-     		stop
-     	elseif(abs(z) > 1.0d0) then
-     		print*, "Error --- PlmBar"
-     		print*, "ABS(Z) must be less than or equal to 1."
-     		print*, "Input value is ", z
-     		stop
-     	endif     	
+ 		print*, "P must be dimensioned as (LMAX+1)*(LMAX+2)/2 where LMAX is ", lmax
+ 		print*, "Input array is dimensioned ", size(p)
+ 		stop
+	endif
      	
-     	if (present(csphase)) then
-     		if (csphase == -1) then
-     			phase = -1
-     		elseif (csphase == 1) then
-     			phase = 1
-     		else
-     			print*, "PlmBar --- Error"
-     			print*, "CSPHASE must be 1 (exclude) or -1 (include)."
-     			print*, "Input value is ", csphase
-     			stop
-     		endif
-     	else
-     		phase = CSPHASE_DEFAULT
-     	endif
      		
 	scalef = 1.0d-280
 	
@@ -224,7 +194,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm)
 		! Calculate P(m,m)
         	kstart = kstart+m+1
          
-         	pmm = phase * pmm * sqr(2*m+1) / sqr(2*m)
+         	pmm = csphase * pmm * sqr(2*m+1) / sqr(2*m)
         	p(kstart) = pmm*rescalem
         	pm2 = pmm
 
@@ -249,7 +219,7 @@ subroutine PlmON(p, lmax, z, csphase, cnorm)
       	rescalem = rescalem*u
       	
         kstart = kstart+m+1
-        pmm = phase * pmm * sqr(2*lmax+1) / sqr(2*lmax)
+        pmm = csphase * pmm * sqr(2*lmax+1) / sqr(2*lmax)
         p(kstart) = pmm*rescalem
       		
 end subroutine PlmON

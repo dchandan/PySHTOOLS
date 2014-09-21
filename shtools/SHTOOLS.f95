@@ -19,10 +19,10 @@ module SHTOOLS
 	interface
 	
 		subroutine PlmBar(p, lmax, z, csphase, cnorm)
-			integer, intent(in) ::	lmax
+			integer, intent(in) ::	lmax, csphase
 			real*8, intent(out) ::	p((lmax+1)*(lmax+2)/2)
    			real*8, intent(in)  ::	z
-   			integer, intent(in), optional :: csphase, cnorm
+   			integer, intent(in), optional :: cnorm
    		end subroutine PlmBar
        		
 		subroutine PlmBar_d1(p, dp, lmax, z, csphase, cnorm)
@@ -45,10 +45,10 @@ module SHTOOLS
    		end subroutine PlBar_d1
        		
    		subroutine PlmSchmidt(p, lmax, z, csphase, cnorm)
-			integer, intent(in) ::	lmax
+			integer, intent(in) ::	lmax, csphase
 			real*8, intent(out) ::	p((lmax+1)*(lmax+2)/2)
   		 	real*8, intent(in)  ::	z
-  		 	integer, intent(in), optional :: csphase, cnorm
+  		 	integer, intent(in), optional :: cnorm
   		end subroutine PlmSchmidt
       		
   		subroutine PlSchmidt(p, lmax, z)
@@ -77,10 +77,9 @@ module SHTOOLS
    		end subroutine PLegendre
        		
    		subroutine PLegendreA(p, lmax, z, csphase)
-			integer, intent(in) ::	lmax
+			integer, intent(in) ::	lmax, csphase
 			real*8, intent(out) ::	p((lmax+1)*(lmax+2)/2)
    			real*8, intent(in)  ::	z
-   			integer, intent(in), optional :: csphase
    		end subroutine PLegendreA
        		
   		subroutine PLegendre_d1(p, dp, lmax, z)
@@ -112,38 +111,20 @@ module SHTOOLS
 			integer, intent(in), optional :: n
 		end subroutine CilmPlusRhoH
 		
-		subroutine Hilm(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, gridtype, w, plx, zero, &
-			filter_type, filter_deg, lmax_calc)
-			real*8, intent(out) :: 	cilm(:,:,:)
-			real*8, intent(in) ::	ba(:,:,:), gridglq(:,:), mass, r0, rho
-			real*8, intent(in), optional ::	plx(:,:), zero(:), w(:)
-			integer, intent(in) ::	lmax, nmax, gridtype
-			integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
-		end subroutine Hilm
 		
-		subroutine HilmRhoH(cilm, ba, gridglq, lmax, nmax, mass, r0, rho, gridtype, w, plx, zero, &
-			filter_type, filter_deg, lmax_calc)
-			real*8, intent(out) :: 	cilm(:,:,:)
-			real*8, intent(in) ::	ba(:,:,:), gridglq(:,:), mass, r0, rho(:,:)
-			real*8, intent(in), optional ::	plx(:,:), zero(:), w(:)
-			integer, intent(in) ::	lmax, nmax, gridtype
-			integer, intent(in), optional :: filter_type, filter_deg, lmax_calc
-		end subroutine HilmRhoH
-		
-		subroutine MakeGrid2d(grid, cilm, lmax, interval, nlat, nlong, norm, csphase, f, a, &
-			north, south, east, west, dealloc)
-			real*8, intent(in) :: 	cilm(:,:,:), interval
-			real*8, intent(out) :: 	grid(:,:)
-			integer, intent(in) :: 	lmax
+		subroutine MakeGrid2d(grid, cilm, lmax, interval, py_m, py_n, north, south, east, west, nlat, nlong, norm, csphase, f, a, dealloc)
+			integer, intent(in)  :: lmax, py_m, py_n
+			real*8, intent(in)   :: cilm(2,lmax+1,lmax+1), interval
+			real*8, intent(out)  :: grid(py_m, py_n)
+			real*8, intent(in)   :: north, south, east, west
 			integer, intent(out) :: nlat, nlong
-			integer, intent(in), optional ::	norm, csphase, dealloc
-			real*8, intent(in), optional :: 	f, a, north, south, east, west
+			integer, intent(in), optional :: norm, csphase, dealloc
+			real*8, intent(in), optional :: f, a
 		end subroutine MakeGrid2D
 
-		subroutine GLQGridCoord(latglq, longlq, lmax, nlat, nlong)
-			integer, intent(in) ::	lmax
-			integer, intent(out) ::	nlat, nlong
-			real*8, intent(out) ::	latglq(:), longlq(:)
+		subroutine GLQGridCoord(latglq, longlq, lmax)
+			integer, intent(in)  ::	lmax
+			real*8, intent(out)  ::	latglq(lmax+1), longlq(2*lmax+1)
 		end subroutine GLQGridCoord
 		
 		subroutine MakeGridGLQ(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc)
@@ -163,17 +144,17 @@ module SHTOOLS
 		end subroutine SHExpandGLQ
 		
 		subroutine PreCompute(lmax, zero, w, plx, wisdom_file, norm, csphase, cnorm)
-			integer, intent(in) ::	lmax
-			real*8, intent(out) ::	zero(:), w(:)
-			real*8, intent(out), optional ::	plx(:,:)
-			integer, intent(in), optional :: norm, csphase, cnorm
-			character(*), intent(in), optional ::	wisdom_file
+			integer, intent(in)                ::  lmax
+			real*8, intent(out)                ::  zero(lmax+1), w(lmax+1)
+			real*8, intent(out), optional      ::  plx(:,:)
+			integer, intent(in), optional      ::  norm, csphase, cnorm
+			character(*), intent(in), optional ::  wisdom_file
 		end subroutine PreCompute
 
 		subroutine PreGLQ(x1, x2, n, zero, w)
-			real*8, intent(in) :: 	x1, x2
-			real*8, intent(out) ::	zero(:), w(:)
-			integer, intent(in) ::	n
+			REAL*8, INTENT(IN)  :: 	X1, X2
+			REAL*8, INTENT(OUT) ::	ZERO(N), W(N)
+			INTEGER, INTENT(IN) ::	N
 		end subroutine PreGLQ
 		
 		integer function NGLQ(degree)
@@ -295,26 +276,25 @@ module SHTOOLS
 			real*8, intent(out) ::	aj(:)
 		end subroutine DHaj
 		
-		subroutine SHExpandDH(grid, py_m, py_n, n, lmax_calc, py_lmax, cilm, lmax, norm, sampling, csphase)
-			integer, intent(in)  ::	n, py_m, py_n, py_lmax, lmax_calc
+		subroutine SHExpandDH(grid, py_m, py_n, lmax_calc, py_lmax, cilm, lmax, norm, sampling, csphase)
+			integer, intent(in)  ::	py_m, py_n, py_lmax, lmax_calc
 			real*8, intent(in)   ::	grid(py_m, py_n)
 			real*8, intent(out)  ::	cilm(2, py_lmax+1, py_lmax+1)
 			integer, intent(out) ::	lmax
 			integer, intent(in), optional :: norm, sampling, csphase
 		end subroutine SHExpandDH
 		
-		subroutine MakeGridDH(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
-			real*8, intent(in) :: 	cilm(:,:,:)
-			real*8, intent(out) ::	griddh(:,:)
-			integer, intent(in) :: 	lmax
-			integer, intent(out) ::	n
-			integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+		subroutine MakeGridDH(griddh, py_m, py_n, cilm, lmax, csphase, norm, sampling)
+			integer, intent(in)           ::  lmax, py_m, py_n, csphase
+			real*8, intent(in)            ::  cilm(2, lmax+1, lmax+1)
+			real*8, intent(out)           ::  griddh(py_m, py_n)
+			integer, intent(in), optional ::  norm, sampling
 		end subroutine MakeGridDH
 		
-		real*8 function MakeGridPoint(cilm, lmax, lat, longitude, norm, csphase, dealloc)
-			real*8, intent(in) ::	cilm(:,:,:), lat, longitude
-			integer, intent(in) ::	lmax
-			integer, intent(in), optional ::	norm, csphase, dealloc
+		real*8 function MakeGridPoint(cilm, lmax, lat, longitude, csphase, norm, dealloc)
+			real*8, intent(in)            :: cilm(2,lmax+1,lmax+1), lat, longitude
+			integer, intent(in)           :: lmax, csphase
+			integer, intent(in), optional :: norm, dealloc
 		end function MakeGridPoint
 		
 		real*8 function Wl(l, half, r, d)
@@ -327,12 +307,11 @@ module SHTOOLS
 			real*8, intent(in) ::	r, d
 		end function WlCurv
 		
-		subroutine SHExpandLSQ(cilm, d, lat, lon, nmax, lmax, norm, chi2, csphase)
-			real*8, intent(in) ::	d(:), lat(:), lon(:)
-			real*8, intent(out) ::	cilm(:,:,:)
-			integer, intent(in) ::	nmax, lmax
-			integer, intent(in), optional ::	norm, csphase
-			real*8, intent(out), optional ::	chi2
+		subroutine SHExpandLSQ(cilm, chi2, d, lat, lon, nmax, lmax, csphase, norm)
+			real*8, intent(in)            ::  d(nmax), lat(nmax), lon(nmax)
+			real*8, intent(out)           ::  cilm(2,lmax+1,lmax+1), chi2
+			integer, intent(in)           ::  nmax, lmax, csphase
+			integer, intent(in), optional ::  norm
 		end subroutine SHExpandLSQ
 
 		subroutine SHMultiply(shout, sh1, lmax1, sh2, lmax2, precomp, norm, csphase)
@@ -405,30 +384,7 @@ module SHTOOLS
 			real*8, intent(out) ::	admit(:), corr(:)
 			real*8, intent(out), optional ::	admit_error(:)
 		end subroutine SHAdmitCorr
-				
-		subroutine SHLocalizedAdmitCorr(tapers, taper_order, lwin, lat, lon, g, t, lmax, admit, corr, K, &
-			admit_error, corr_error, taper_wt, mtdef, k1linsig)
-			real*8, intent(in) ::	tapers(:,:), lat, lon, g(:,:,:), t(:,:,:)
-			integer, intent(in) ::	lwin, lmax, K, taper_order(:)
-			real*8, intent(out) ::	admit(:), corr(:)
-			real*8, intent(out), optional ::	admit_error(:), corr_error(:)
-			integer, intent(in), optional ::	mtdef, k1linsig
-			real*8, intent(in), optional ::	taper_wt(:)
-		end subroutine SHLocalizedAdmitCorr
-
-		subroutine EigValVecSymTri(ain, n, eig, evec, ul)
-			real*8, intent(in) ::	ain(:,:)
-			integer, intent(in) ::	n
-			real*8, intent(out) ::	eig(:), evec(:,:)
-			character, intent(in), optional :: ul
-		end subroutine EigValVecSymTri
-		
-		subroutine ComputeDG82(dG82, lmax, m, theta0)
-			real*8, intent(out) ::	dG82(:,:)
-			real*8, intent(in) ::	theta0
-			integer, intent(in) :: 	lmax, m
-		end subroutine ComputeDG82	
-						
+										
 		integer function PlmIndex(l,m)
 			integer, intent(in)	:: l, m
 		end function PlmIndex
@@ -521,10 +477,10 @@ module SHTOOLS
 		end subroutine MakeGeoidGrid
 			
 		subroutine PlmON(p, lmax, z, csphase, cnorm)
-			integer, intent(in) ::	lmax
+			integer, intent(in) ::	lmax, csphase
 			real*8, intent(out) ::	p((lmax+1)*(lmax+2)/2)
    			real*8, intent(in)  ::	z
-   			integer, intent(in), optional :: csphase, cnorm
+   			integer, intent(in), optional :: cnorm
    		end subroutine PlmON
        		
        	subroutine PlON(p, lmax, z)
@@ -546,66 +502,12 @@ module SHTOOLS
    			real*8, intent(in) ::	z
    		end subroutine PlON_d1
        		
-   		subroutine MakeCircleCoord(coord, lat, lon, theta0, cinterval, cnum)
-			real*8, intent(in) ::	lat, lon, theta0
-			real*8, intent(out) :: coord(:,:)
-			real*8, intent(in), optional ::	cinterval
-			integer, intent(out), optional :: cnum
-		end subroutine MakeCircleCoord
-		
-		subroutine SHReturnTapers(theta0, lmax, tapers, eigenvalues, taper_order)
-			real*8, intent(in) ::	theta0
-			integer, intent(in) ::	lmax
-			real*8, intent(out) ::	tapers(:,:), eigenvalues(:)
-			integer, intent(out) ::	taper_order(:)
-		end subroutine SHReturnTapers
-		
-		complex*16 function SHSjkPG(incspectra, l, m, mprime, hj_real, hk_real, mj, mk, lwin, hkcc)
-			real*8, intent(in) ::	incspectra(:), hj_real(:), hk_real(:)
-			integer, intent(in) ::	lwin, l, m, mprime, mj, mk, hkcc
-		end function SHSjkPG
-		
-		subroutine SHMTVarOpt(l, tapers, taper_order, lwin, kmax, Sff, var_opt, var_unit, weight_opt, unweighted_covar, nocross)
-			real*8, intent(in) ::	tapers(:,:), Sff(:)
-			real*8, intent(out) ::	var_opt(:), var_unit(:)
-			integer, intent(in) ::	l, lwin, kmax, taper_order(:)
-			real*8, intent(out), optional ::	weight_opt(:,:), unweighted_covar(:,:)
-			integer, intent(in), optional :: 	nocross
-		end subroutine SHMTVarOpt
-		
-		subroutine SHMTDebias (mtdebias, mtspectra, lmax, tapers, lwin, K, nl, lmid, n, taper_wt)
-			real*8, intent(out) ::	mtdebias(:,:), lmid(:)
-			real*8, intent(in) :: mtspectra(:,:), tapers(:,:)
-			real*8, intent(in), optional :: taper_wt(:)
-			integer, intent(in) :: lmax, K, lwin, nl
-			integer, intent(out) :: n
-		end subroutine SHMTDebias
-		
-		subroutine MakeGravGridDH(cilm, lmax, gm, r0, a, f, rad, theta, phi, total, n, sampling, lmax_calc, omega, normal_gravity, pot)
-			real*8, intent(in) :: 	cilm(:,:,:), gm, r0, a, f
-			real*8, intent(out) ::	rad(:,:), theta(:,:), phi(:,:), total(:,:)
-			real*8, intent(in), optional :: omega
-			real*8, intent(out), optional :: pot(:,:)
-			integer, intent(in) :: 	lmax
-			integer, intent(out) ::	n
-			integer, intent(in), optional :: sampling, lmax_calc, normal_gravity
-		end subroutine MakeGravGridDH
-		
-		real*8 function NormalGravity(geocentric_lat, GM, omega, a, b)
-			real*8, intent(in) ::	geocentric_lat, gm, omega, a, b
-		end function NormalGravity
 		
 		real*8 function SHConfidence(l_conf, r)
 			real*8, intent(in) :: r
 			integer, intent(in) :: l_conf
 		end function SHConfidence
-		
-		real*8 function SHMagPowerL(c, a, r, l)
-			real*8, intent(in) :: c(:,:,:)
-			real*8, intent(in) :: a, r
-			integer, intent(in) :: l
-		end function SHMagPowerL
-		
+				
 		subroutine SHMagPowerSpectrum(c, a, r, lmax, spectra)
 			real*8, intent(in) :: c(:,:,:)
 			real*8, intent(in) :: a, r
@@ -690,14 +592,6 @@ module SHTOOLS
 			complex*16, intent(out) ::	cspectra(:)
 		end subroutine SHCrossPowerSpectrumDensityC
 
-		subroutine SHBiasAdmitCorr(Sgt, Sgg, Stt, lmax, tapers, lwin, K, admit, corr, mtdef, taper_wt)
-			real*8, intent(in) ::	sgt(:), sgg(:), stt(:), tapers(:,:)
-			integer, intent(in) ::	lmax, lwin, K
-			real*8, intent(out) ::	admit(:), corr(:)
-			integer, intent(in), optional ::	mtdef
-			real*8, intent(in), optional ::	taper_wt(:)
-		end subroutine SHBiasAdmitCorr
-		
 		subroutine SHCilmToVector(cilm, vector, lmax)
 			real*8, intent(in) ::	cilm(:,:,:)
 			real*8, intent(out) ::	vector(:)
@@ -719,33 +613,6 @@ module SHTOOLS
 			integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
 		end subroutine ComputeDMap
 		
-		subroutine SHReturnTapersMap(tapers, eigenvalues, dh_mask, n_dh, sampling, lmax, Ntapers)
-			real*8, intent(out) ::	tapers(:,:), eigenvalues(:)
-			integer, intent(in) ::	dh_mask(:,:), n_dh, sampling, lmax
-			integer, intent(in), optional ::	Ntapers
-		end subroutine SHReturnTapersMap
-		
-		subroutine Curve2Mask(dhgrid, n, sampling, profile, nprofile, NP)
-			integer, intent(out) ::	dhgrid(:,:)
-			real*8, intent(in) ::	profile(:,:)
-			integer, intent(in) ::	n, sampling, nprofile, np
-		end subroutine Curve2Mask
-		
-		subroutine MakeEllipseCoord(coord, lat, lon, dec, A_theta, B_theta, cinterval, cnum)
-			real*8, intent(in) ::	lat, lon, A_theta, B_theta, dec
-			real*8, intent(out) :: coord(:,:)
-			real*8, intent(in), optional ::	cinterval
-			integer, intent(out), optional :: cnum
-		end subroutine MakeEllipseCoord
-		
-		subroutine MakeGravGradGridDH(cilm, lmax, gm, r0, a, f, vxx, vyy, vzz, vxy, vxz, vyz, n, sampling, lmax_calc)
-			real*8, intent(in) :: 	cilm(:,:,:), gm, r0, a, f
-			real*8, intent(out) ::	vxx(:,:), vyy(:,:), vzz(:,:), vxy(:,:), vxz(:,:), vyz(:,:)
-			integer, intent(in) :: 	lmax
-			integer, intent(out) ::	n
-			integer, intent(in), optional :: sampling, lmax_calc
-		end subroutine MakeGravGradGridDH
-
 	end interface
 	
 end module SHTOOLS

@@ -1,6 +1,7 @@
 
 SOURCES = DHaj.f95 \
 SHExpandDH.f95     \
+PlmIndex.f95       \
 PlON.f95           \
 PlmON.f95          \
 PlmBar.f95         \
@@ -9,7 +10,14 @@ PLegendre.f95      \
 PLegendreA.f95     \
 PlSchmidt.f95      \
 PlmSchmidt.f95     \
-MakeGrid2D.f95
+MakeGrid2D.f95     \
+ReadWisdom.f95     \
+PreGLQ.f95         \
+PreCompute.f95     \
+SHExpandLSQ.f95    \
+MakeGridPoint.f95  \
+MakeGridDH.f95     \
+GLQGridCoord.f95
 
 MODS = FFTW3.o SHTOOLS.o
 

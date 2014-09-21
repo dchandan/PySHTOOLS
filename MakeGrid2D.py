@@ -13,7 +13,12 @@ def MakeGrid2D(cilm, ny, nx, norm=4, csphase=1, north=90.0, south=-90.0, east=36
     i1 = (north - south)/(ny - 1.)
     i2 = (east - west)/(nx - 1.)
     
-    assert(i1 == i2)
+    if not (i1 == i2):
+        print("ERROR !!!")
+        print(" |- In routine - PySHTOOLS::MakeGrid2D")
+        print(" |->>> X and Y grid spacing must be equal, but the following spacings were calculated based on function arguments:")
+        print(" |->>> {0} and {1}".format(i1, i2))
+        raise PySHTOOLSError()
     
     grid, a, b = makegrid2d(cilm, i1, ny, nx, north, south, east, west, norm=norm, csphase=csphase, dealloc=0)
     return grid
