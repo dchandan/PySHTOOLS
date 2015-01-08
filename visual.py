@@ -52,5 +52,6 @@ def Plot3D(l, m):
     mlab.mesh(grid * x, grid * y, grid * z, scalars=grid, colormap='Spectral')
     mlab.show()
 
-
-SPHarmPlot3D([[4,3]])
+if __name__ == "__main__":
+    # SPHarmPlot3D([[4,3]])
+    Plot3D(4,3)

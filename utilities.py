@@ -6,29 +6,34 @@ class PySHTOOLSError(Exception):
 
 class InvalidNormalization(PySHTOOLSError):
     """ This error is raised when the normalization of
-    Legendre polynomials is not correct. 
+    Legendre polynomials is not correct.
     """
     def __init__(self):
         pass
 
+
 class InvalidPhaseFactor(PySHTOOLSError):
     """ This error is raised when the CSPHASE factor does not
-    have the correct value. 
+    have the correct value.
     """
     def __init__(self):
         pass
+
 
 class InvalidSampling(PySHTOOLSError):
     def __init__(self):
         pass
 
+
 class GridError(PySHTOOLSError):
     def __init__(self):
         pass
 
+
 class CILMShapeError(PySHTOOLSError):
     def __init__(self):
         pass
+
 
 class DegreeError(PySHTOOLSError):
     def __init__(self):
