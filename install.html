@@ -6,7 +6,7 @@
   <head>
     <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
     
-    <title>Welcome to PySHTOOLS’s documentation! &mdash; PySHTOOLS 1.1 documentation</title>
+    <title>Installation &mdash; PySHTOOLS 1.1 documentation</title>
     
     <link rel="stylesheet" href="_static/default.css" type="text/css" />
     <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
@@ -24,8 +24,9 @@
     <script type="text/javascript" src="_static/underscore.js"></script>
     <script type="text/javascript" src="_static/doctools.js"></script>
     <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
-    <link rel="top" title="PySHTOOLS 1.1 documentation" href="#" />
-    <link rel="next" title="Introduction" href="intro.html" /> 
+    <link rel="top" title="PySHTOOLS 1.1 documentation" href="index.html" />
+    <link rel="next" title="Legendre Functions" href="basics.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
   </head>
   <body>
     <div class="related">
@@ -38,9 +39,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="intro.html" title="Introduction"
+          <a href="basics.html" title="Legendre Functions"
              accesskey="N">next</a> |</li>
-        <li><a href="#">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>  
 
@@ -49,31 +53,15 @@
         <div class="bodywrapper">
           <div class="body">
             
-  <div class="section" id="welcome-to-pyshtools-s-documentation">
-<h1>Welcome to PySHTOOLS&#8217;s documentation!<a class="headerlink" href="#welcome-to-pyshtools-s-documentation" title="Permalink to this headline">¶</a></h1>
-<p>Contents:</p>
-<div class="toctree-wrapper compound">
-<ul>
-<li class="toctree-l1"><a class="reference internal" href="intro.html">Introduction</a><ul>
-<li class="toctree-l2"><a class="reference internal" href="intro.html#spherical-harmonics">Spherical Harmonics</a></li>
-</ul>
-</li>
-<li class="toctree-l1"><a class="reference internal" href="install.html">Installation</a></li>
-<li class="toctree-l1"><a class="reference internal" href="basics.html">Legendre Functions</a></li>
-<li class="toctree-l1"><a class="reference internal" href="transformations.html">Spherical Harmonic Transformations</a></li>
-<li class="toctree-l1"><a class="reference internal" href="special.html">Special Functionality Routines</a></li>
-<li class="toctree-l1"><a class="reference internal" href="power.html">Calculating power</a></li>
-<li class="toctree-l1"><a class="reference internal" href="misc.html">Miscelaneous Functions</a></li>
-</ul>
-</div>
-</div>
-<div class="section" id="indices-and-tables">
-<h1>Indices and tables<a class="headerlink" href="#indices-and-tables" title="Permalink to this headline">¶</a></h1>
-<ul class="simple">
-<li><a class="reference internal" href="genindex.html"><em>Index</em></a></li>
-<li><a class="reference internal" href="py-modindex.html"><em>Module Index</em></a></li>
-<li><a class="reference internal" href="search.html"><em>Search Page</em></a></li>
-</ul>
+  <div class="section" id="installation">
+<span id="intro"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
+<p>You will require a Fortran compiler such as the freely available <a class="reference external" href="https://gcc.gnu.org/wiki/GFortran">gfortran</a> and <a class="reference external" href="http://docs.scipy.org/doc/numpy-dev/f2py/">F2Py</a>. A copy of the relevant source files from SHTOOLS is included in PySHTOOLS so you don&#8217;t need to install SHTOOLS separately in order to install PySHTOOLS.</p>
+<p>After downloading and unpacking the source code follow these steps:</p>
+<ol class="arabic simple">
+<li>Open terminal, change to the &#8220;shtools&#8221; sub-directory within the PySHTOOLS directory.</li>
+<li>Type <tt class="docutils literal"><span class="pre">make</span></tt>. This will compile the Fortran codes using f2py and gfortran. If you do not have these two executables available in your <tt class="docutils literal"><span class="pre">PATH</span></tt> then this step will produce an error. Note: It is natural for f2py to produce lots of output on the screen. If the compilation is successful you will have a <tt class="docutils literal"><span class="pre">_shtools.so</span></tt> shared library in the top level PySHTOOLS directory.</li>
+<li>Finally to use this library, either move the complete &#8220;PySHTOOLS&#8221; folder to the site-packages directory of your python installation, or if you don&#8217;t want to do that, then add the path to the directory to your PYTHONPATH shell variable.</li>
+</ol>
 </div>
 
 
@@ -82,18 +70,15 @@
       </div>
       <div class="sphinxsidebar">
         <div class="sphinxsidebarwrapper">
-  <h3><a href="#">Table Of Contents</a></h3>
-  <ul>
-<li><a class="reference internal" href="#">Welcome to PySHTOOLS&#8217;s documentation!</a></li>
-<li><a class="reference internal" href="#indices-and-tables">Indices and tables</a></li>
-</ul>
-
-  <h4>Next topic</h4>
+  <h4>Previous topic</h4>
   <p class="topless"><a href="intro.html"
-                        title="next chapter">Introduction</a></p>
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="basics.html"
+                        title="next chapter">Legendre Functions</a></p>
   <h3>This Page</h3>
   <ul class="this-page-menu">
-    <li><a href="_sources/index.txt"
+    <li><a href="_sources/install.txt"
            rel="nofollow">Show Source</a></li>
   </ul>
 <div id="searchbox" style="display: none">
@@ -123,9 +108,12 @@
           <a href="py-modindex.html" title="Python Module Index"
              >modules</a> |</li>
         <li class="right" >
-          <a href="intro.html" title="Introduction"
+          <a href="basics.html" title="Legendre Functions"
              >next</a> |</li>
-        <li><a href="#">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
       </ul>
     </div>
     <div class="footer">
