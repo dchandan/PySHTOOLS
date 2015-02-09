@@ -1,0 +1,285 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Legendre Functions &mdash; PySHTOOLS 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PySHTOOLS 1.1 documentation" href="index.html" />
+    <link rel="next" title="Spherical Harmonic Transformations" href="transformations.html" />
+    <link rel="prev" title="Introduction" href="intro.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="transformations.html" title="Spherical Harmonic Transformations"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="module-legendre">
+<span id="legendre-functions"></span><span id="basics"></span><h1>Legendre Functions<a class="headerlink" href="#module-legendre" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="legendre.PlON">
+<tt class="descclassname">legendre.</tt><tt class="descname">PlON</tt><big>(</big><em>lmax</em>, <em>z</em><big>)</big><a class="headerlink" href="#legendre.PlON" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>This function evalutates all ortho-normalized legendre polynomials up to degree <tt class="docutils literal"><span class="pre">lmax</span></tt>.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">A vector of all associated Legendgre polynomials evaluated at <tt class="docutils literal"><span class="pre">z</span></tt> up to <tt class="docutils literal"><span class="pre">lmax</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy 1D array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="legendre.PlmON">
+<tt class="descclassname">legendre.</tt><tt class="descname">PlmON</tt><big>(</big><em>lmax</em>, <em>z</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#legendre.PlmON" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This function evalutates all the normalized associated Legendre
+functions up to degree <tt class="docutils literal"><span class="pre">lmax</span></tt>.</p>
+<p><strong>Comments from the SHTOOLS library:</strong> The functions are initially scaled by
+10^280 sin^m in order to minimize the effects of underflow at large m
+near the poles (see Holmes and Featherstone 2002, J. Geodesy, 76, 279-299).
+On a Mac OSX system with a maximum allowable double precision value of
+2.225073858507203E-308 the scaled portion of the algorithm will not overflow
+for degrees less than or equal to 2800.</p>
+<p>For each value of m, the rescaling factor is computed as rescalem=rescalem*sin(theta),
+with the intial value of rescalem being equal to 1/scalef (which is here equal
+to 10^280). This will gradually reduce this huge number to a tiny number, and will
+ultimately underflow. In order to prevent this underflow, when rescalem becomes less than
+10^(-280), the subsequent rescaling factors of sin(theta) will be directly applied to Plm, and then this
+number will be multipled by the old value of rescalem.</p>
+<p>Temporary variables in saved in an allocated array. In order to explicitly deallocate this
+memory, call this routine with a spherical harmonic degree of -1.</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; <p>Condon-Shortley phase factor</p>
+<p>1  = Do not Apply
+-1 = Apply the phase factor</p>
+</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="legendre.PlmBar">
+<tt class="descclassname">legendre.</tt><tt class="descname">PlmBar</tt><big>(</big><em>lmax</em>, <em>z</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#legendre.PlmBar" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div><p>This function evalutates all of the normalized associated Legendre
+functions up to degree lmax.</p>
+<p><strong>Comments from the SHTOOLS library:</strong> The functions are initially scaled by
+10^280 sin^m in order to minimize the effects of underflow at large m
+near the poles (see Holmes and Featherstone 2002, J. Geodesy, 76, 279-299).
+On a Mac OSX system with a maximum allowable double precision value of
+2.225073858507203E-308 the scaled portion of the algorithm will not overflow
+for degrees less than or equal to 2800.</p>
+<p>For each value of m, the rescaling factor is computed as rescalem=rescalem*sin(theta),
+with the intial value of rescalem being equal to 1/scalef (which is here equal
+to 10^280). This will gradually reduce this huge number to a tiny number, and will
+ultimately underflow. In order to prevent this underflow, when rescalem becomes less than
+10^(-280), the subsequent rescaling factors of sin(theta) will be directly applied to Plm, and then this
+number will be multipled by the old value of rescalem.</p>
+</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor (1=Do not Apply, -1=Apply)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="legendre.PLegendreA">
+<tt class="descclassname">legendre.</tt><tt class="descname">PLegendreA</tt><big>(</big><em>lmax</em>, <em>z</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#legendre.PLegendreA" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor (1=Do not Apply, -1=Apply)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="legendre.PLegendre">
+<tt class="descclassname">legendre.</tt><tt class="descname">PLegendre</tt><big>(</big><em>lmax</em>, <em>z</em><big>)</big><a class="headerlink" href="#legendre.PLegendre" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="legendre.PlmSchmidt">
+<tt class="descclassname">legendre.</tt><tt class="descname">PlmSchmidt</tt><big>(</big><em>lmax</em>, <em>z</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#legendre.PlmSchmidt" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor (1=Do not Apply, -1=Apply)</li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="legendre.PlSchmidt">
+<tt class="descclassname">legendre.</tt><tt class="descname">PlSchmidt</tt><big>(</big><em>lmax</em>, <em>z</em><big>)</big><a class="headerlink" href="#legendre.PlSchmidt" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first last simple">
+<li><strong>lmax</strong> (<em>int</em>) &#8211; Maximum spherical harmonic degree to compute</li>
+<li><strong>z</strong> (<em>real</em>) &#8211; <tt class="docutils literal"><span class="pre">cos(colatitude)</span></tt> or <tt class="docutils literal"><span class="pre">sin(latitude)</span></tt></li>
+</ul>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="intro.html"
+                        title="previous chapter">Introduction</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="transformations.html"
+                        title="next chapter">Spherical Harmonic Transformations</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/basics.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="transformations.html" title="Spherical Harmonic Transformations"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="intro.html" title="Introduction"
+             >previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Deepak Chandan.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

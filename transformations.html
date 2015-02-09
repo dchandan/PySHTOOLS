@@ -1,0 +1,238 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Spherical Harmonic Transformations &mdash; PySHTOOLS 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PySHTOOLS 1.1 documentation" href="index.html" />
+    <link rel="next" title="Special Functionality Routines" href="special.html" />
+    <link rel="prev" title="Legendre Functions" href="basics.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="special.html" title="Special Functionality Routines"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="basics.html" title="Legendre Functions"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="spherical-harmonic-transformations">
+<span id="transforms"></span><h1>Spherical Harmonic Transformations<a class="headerlink" href="#spherical-harmonic-transformations" title="Permalink to this headline">¶</a></h1>
+<span class="target" id="shexpanddh"></span><dl class="method">
+<dt id="SHExpandDH">
+<tt class="descname">SHExpandDH</tt><big>(</big><em>grid</em>, <em>lmax_calc</em>, <em>degmax=None</em>, <em>norm=4</em>, <em>sampling=2</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#SHExpandDH" title="Permalink to this definition">¶</a></dt>
+<dd><p>This routine will expand a grid containing <tt class="docutils literal"><span class="pre">N</span></tt> samples in both longitude and latitude (or <tt class="docutils literal"><span class="pre">N</span> <span class="pre">x</span> <span class="pre">2N</span></tt>, see sampling) into spherical harmonics. This routine makes use of the sampling theorem presented in Driscoll and Healy (1994) and employs FFTs when calculating the sine and cosine terms. The number of samples, <tt class="docutils literal"><span class="pre">N</span></tt>, must be <strong>EVEN</strong> for this routine to work, and the spherical harmonic expansion is exact if the function is band limited to degree <tt class="docutils literal"><span class="pre">N/2-1</span></tt>. Legendre functions are computed on the fly using the scaling methodology presented in Holmes and Featherston (2002). When <tt class="docutils literal"><span class="pre">norm</span></tt> is 1,2 or 4, these are accurate to about degree 2800. When <tt class="docutils literal"><span class="pre">norm</span></tt> is 3, the routine is only stable to about degree 15.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>grid</strong> (<em>numpy array</em>) &#8211; the 2D grid to decompose into SH coefficients. If sampling == 1: (N,N) and if sampling == 2: (N,2N)</li>
+<li><strong>lmax_calc</strong> (<em>int</em>) &#8211; maximum spherical harmonic degree for which the coefficients will be calculated</li>
+<li><strong>degmax</strong> (<em>integer or None</em>) &#8211; maximum degree represented in the cilm array (if <tt class="docutils literal"><span class="pre">degmax=None</span></tt>, maximum degree in the array is <tt class="docutils literal"><span class="pre">lmax_calc</span></tt>). If <tt class="docutils literal"><span class="pre">degmax</span> <span class="pre">&gt;</span> <span class="pre">lmax_calc</span></tt> then the coefficients for degrees greater than <tt class="docutils literal"><span class="pre">lmax_calc</span></tt> are set to zero</li>
+<li><strong>norm</strong> (<em>int</em>) &#8211; spherical harmonic normalization</li>
+<li><strong>sampling</strong> (<em>int</em>) &#8211; the shape of the data array that will be decomposed in SH coefficients</li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">coefficients array of shape (2, l+1, l+1) where <tt class="docutils literal"><span class="pre">l=max(degmax,</span> <span class="pre">lmax_calc)</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="SHExpandLSQ">
+<tt class="descname">SHExpandLSQ</tt><big>(</big><em>d</em>, <em>lat</em>, <em>lon</em>, <em>lmax</em>, <em>norm=4</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#SHExpandLSQ" title="Permalink to this definition">¶</a></dt>
+<dd><p>This routine will expand a set of discrete data points into spherical harmonics using a least squares inversion. When there are more data points than spherical harmonic coefficients <tt class="docutils literal"><span class="pre">(len(d)</span> <span class="pre">&gt;</span> <span class="pre">(lmax+1)**2)</span></tt> the solution of the overdetermined system will be determined by least squares. If there are more coefficients than data points, then the solution of the underdetermined system will be determined by minimizing the solution norm. (See LAPACK DGELS documentation).</p>
+<p>Note that this routine takes lots of memory (~ <tt class="docutils literal"><span class="pre">8*nmax*(lmax+1)**2</span></tt> bytes) and is very slow for large <tt class="docutils literal"><span class="pre">lmax</span></tt>.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>d</strong> (<em>numpy array</em>) &#8211; 1D array of raw data points</li>
+<li><strong>lat</strong> (<em>numpy array</em>) &#8211; 1D array of corresponding latitudes</li>
+<li><strong>lon</strong> (<em>numpy array</em>) &#8211; 1D array of corresponding longitudes</li>
+<li><strong>lmax</strong> (<em>int</em>) &#8211; maximum spherical harmonic degree for which the coefficients will be calculated</li>
+<li><strong>norm</strong> (<em>int</em>) &#8211; spherical harmonic normalization</li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">coefficients array of shape (2, lmax+1, lmax+1)</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first">numpy array</p>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">residual sum of squares misfit for an overdetermined inversion</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">real</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="MakeGrid2D">
+<tt class="descname">MakeGrid2D</tt><big>(</big><em>cilm</em>, <em>ny</em>, <em>nx</em>, <em>norm=4</em>, <em>csphase=1</em>, <em>north=90.0</em>, <em>south=-90.0</em>, <em>east=360.0</em>, <em>west=0.0</em><big>)</big><a class="headerlink" href="#MakeGrid2D" title="Permalink to this definition">¶</a></dt>
+<dd><p>Given the Spherical Harmonic coefficients <tt class="docutils literal"><span class="pre">cilm</span></tt>, this routine will compute a 2D grid with equal latitude and longitude spacings. The spacing is determined based on the bounding coordinate values represented by <tt class="docutils literal"><span class="pre">north,</span> <span class="pre">south,</span> <span class="pre">east,</span> <span class="pre">west</span></tt> and the number of latitude and longitude points - <tt class="docutils literal"><span class="pre">ny</span></tt>, <tt class="docutils literal"><span class="pre">nx</span></tt> respectively. If the mix of these values does not produce equal spacing in both latitude and longitude, then the program will raise an error.</p>
+<p>The values in the returned grid are in the order of latitude going from 90 to -90 and longitudes going from 0 to 360 (both these longitudes present in the returned grid). If the optional parameters <tt class="docutils literal"><span class="pre">north</span></tt>, <tt class="docutils literal"><span class="pre">south</span></tt>, <tt class="docutils literal"><span class="pre">east</span></tt> and <tt class="docutils literal"><span class="pre">west</span></tt> are specified, the upper-left and lower right coordinates of the output grid are (north, west) and (south, east), respectively.</p>
+<p>Note that since this routined does not use FFTs, this routine is therefore slower than MakeGridDH. However MakeGridDH does not allow for the specification of arbitray dimensions of the returned grid.</p>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cilm</strong> (<em>numpy array</em>) &#8211; SH coefficients array of shape (2, lmax+1, lmax+1), where <tt class="docutils literal"><span class="pre">lmax</span></tt> represents the maximum degree for which coefficients are present in the array</li>
+<li><strong>ny</strong> (<em>int</em>) &#8211; number of latitude points in the output grid</li>
+<li><strong>nx</strong> (<em>int</em>) &#8211; number of longitude points in the output grid</li>
+<li><strong>norm</strong> (<em>int</em>) &#8211; spherical harmonic normalization</li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor</li>
+<li><strong>north</strong> (<em>real</em>) &#8211; The north bounding latitude in the returned grid</li>
+<li><strong>south</strong> (<em>real</em>) &#8211; The south bounding latitude in the returned grid</li>
+<li><strong>east</strong> (<em>real</em>) &#8211; The east bounding latitude in the returned grid</li>
+<li><strong>west</strong> (<em>real</em>) &#8211; The west bounding latitude in the returned grid</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">2D grid that has been constructed from the coefficients. If <tt class="docutils literal"><span class="pre">sampling==1</span></tt>, the shape of the array is (N,N) and for <tt class="docutils literal"><span class="pre">sampling==2</span></tt> the shape is (N,2N), where <tt class="docutils literal"><span class="pre">N=2*l+1</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+<dl class="method">
+<dt id="MakeGridDH">
+<tt class="descname">MakeGridDH</tt><big>(</big><em>cilm</em>, <em>l</em>, <em>norm=4</em>, <em>csphase=1</em>, <em>sampling=2</em><big>)</big><a class="headerlink" href="#MakeGridDH" title="Permalink to this definition">¶</a></dt>
+<dd><table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>cilm</strong> (<em>numpy array</em>) &#8211; SH coefficients array of shape (2, lmax+1, lmax+1), where <tt class="docutils literal"><span class="pre">lmax</span></tt> represents the maximum degree for which coefficients are present in the array</li>
+<li><strong>norm</strong> (<em>int</em>) &#8211; spherical harmonic normalization</li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor</li>
+<li><strong>sampling</strong> (<em>int</em>) &#8211; the shape of the data array that will be decomposed in SH coefficients</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">2D grid that has been constructed from the coefficients. If <tt class="docutils literal"><span class="pre">sampling==1</span></tt>, the shape of the array is (N,N) and for <tt class="docutils literal"><span class="pre">sampling==2</span></tt> the shape is (N,2N), where <tt class="docutils literal"><span class="pre">N=2*l+1</span></tt>.</p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="basics.html"
+                        title="previous chapter">Legendre Functions</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="special.html"
+                        title="next chapter">Special Functionality Routines</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/transformations.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="special.html" title="Special Functionality Routines"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="basics.html" title="Legendre Functions"
+             >previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Deepak Chandan.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>

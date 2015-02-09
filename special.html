@@ -1,0 +1,145 @@
+<!DOCTYPE html PUBLIC "-//W3C//DTD XHTML 1.0 Transitional//EN"
+  "http://www.w3.org/TR/xhtml1/DTD/xhtml1-transitional.dtd">
+
+
+<html xmlns="http://www.w3.org/1999/xhtml">
+  <head>
+    <meta http-equiv="Content-Type" content="text/html; charset=utf-8" />
+    
+    <title>Special Functionality Routines &mdash; PySHTOOLS 1.1 documentation</title>
+    
+    <link rel="stylesheet" href="_static/default.css" type="text/css" />
+    <link rel="stylesheet" href="_static/pygments.css" type="text/css" />
+    
+    <script type="text/javascript">
+      var DOCUMENTATION_OPTIONS = {
+        URL_ROOT:    './',
+        VERSION:     '1.1',
+        COLLAPSE_INDEX: false,
+        FILE_SUFFIX: '.html',
+        HAS_SOURCE:  true
+      };
+    </script>
+    <script type="text/javascript" src="_static/jquery.js"></script>
+    <script type="text/javascript" src="_static/underscore.js"></script>
+    <script type="text/javascript" src="_static/doctools.js"></script>
+    <script type="text/javascript" src="http://cdn.mathjax.org/mathjax/latest/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+    <link rel="top" title="PySHTOOLS 1.1 documentation" href="index.html" />
+    <link rel="next" title="Calculating power" href="power.html" />
+    <link rel="prev" title="Spherical Harmonic Transformations" href="transformations.html" /> 
+  </head>
+  <body>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             accesskey="I">index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="power.html" title="Calculating power"
+             accesskey="N">next</a> |</li>
+        <li class="right" >
+          <a href="transformations.html" title="Spherical Harmonic Transformations"
+             accesskey="P">previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>  
+
+    <div class="document">
+      <div class="documentwrapper">
+        <div class="bodywrapper">
+          <div class="body">
+            
+  <div class="section" id="special-functionality-routines">
+<span id="specials"></span><h1>Special Functionality Routines<a class="headerlink" href="#special-functionality-routines" title="Permalink to this headline">¶</a></h1>
+<dl class="method">
+<dt id="LimitBandwidth">
+<tt class="descname">LimitBandwidth</tt><big>(</big><em>grid</em>, <em>lmax</em>, <em>lmin=0</em>, <em>norm=4</em>, <em>csphase=1</em><big>)</big><a class="headerlink" href="#LimitBandwidth" title="Permalink to this definition">¶</a></dt>
+<dd><blockquote>
+<div>This convenience routine returns a grid which contains degrees <tt class="docutils literal"><span class="pre">lmin</span></tt> to <tt class="docutils literal"><span class="pre">lmax</span></tt> of the input grid. Basically, it first decoposes the input grid by making a call to SHExpandDH , then sets all coefficients outside the range to zero and then issues a call to MakeGrid2D to recompose the coefficients.</div></blockquote>
+<table class="docutils field-list" frame="void" rules="none">
+<col class="field-name" />
+<col class="field-body" />
+<tbody valign="top">
+<tr class="field-odd field"><th class="field-name">Parameters:</th><td class="field-body"><ul class="first simple">
+<li><strong>grid</strong> (<em>numpy array</em>) &#8211; A 2D grid</li>
+<li><strong>lmax</strong> (<em>int</em>) &#8211; maximum spherical harmonic degree of decomposition</li>
+<li><strong>lmin</strong> (<em>int</em>) &#8211; minimum spherical harmonic degree of decomposition</li>
+<li><strong>norm</strong> (<em>int</em>) &#8211; spherical harmonic normalization</li>
+<li><strong>csphase</strong> (<em>int</em>) &#8211; Condon-Shortley phase factor</li>
+</ul>
+</td>
+</tr>
+<tr class="field-even field"><th class="field-name">Returns:</th><td class="field-body"><p class="first">2D grid which is band-limited between <tt class="docutils literal"><span class="pre">lmin</span></tt> and <tt class="docutils literal"><span class="pre">lmax</span></tt></p>
+</td>
+</tr>
+<tr class="field-odd field"><th class="field-name">Return type:</th><td class="field-body"><p class="first last">numpy array</p>
+</td>
+</tr>
+</tbody>
+</table>
+</dd></dl>
+
+</div>
+
+
+          </div>
+        </div>
+      </div>
+      <div class="sphinxsidebar">
+        <div class="sphinxsidebarwrapper">
+  <h4>Previous topic</h4>
+  <p class="topless"><a href="transformations.html"
+                        title="previous chapter">Spherical Harmonic Transformations</a></p>
+  <h4>Next topic</h4>
+  <p class="topless"><a href="power.html"
+                        title="next chapter">Calculating power</a></p>
+  <h3>This Page</h3>
+  <ul class="this-page-menu">
+    <li><a href="_sources/special.txt"
+           rel="nofollow">Show Source</a></li>
+  </ul>
+<div id="searchbox" style="display: none">
+  <h3>Quick search</h3>
+    <form class="search" action="search.html" method="get">
+      <input type="text" name="q" />
+      <input type="submit" value="Go" />
+      <input type="hidden" name="check_keywords" value="yes" />
+      <input type="hidden" name="area" value="default" />
+    </form>
+    <p class="searchtip" style="font-size: 90%">
+    Enter search terms or a module, class or function name.
+    </p>
+</div>
+<script type="text/javascript">$('#searchbox').show(0);</script>
+        </div>
+      </div>
+      <div class="clearer"></div>
+    </div>
+    <div class="related">
+      <h3>Navigation</h3>
+      <ul>
+        <li class="right" style="margin-right: 10px">
+          <a href="genindex.html" title="General Index"
+             >index</a></li>
+        <li class="right" >
+          <a href="py-modindex.html" title="Python Module Index"
+             >modules</a> |</li>
+        <li class="right" >
+          <a href="power.html" title="Calculating power"
+             >next</a> |</li>
+        <li class="right" >
+          <a href="transformations.html" title="Spherical Harmonic Transformations"
+             >previous</a> |</li>
+        <li><a href="index.html">PySHTOOLS 1.1 documentation</a> &raquo;</li> 
+      </ul>
+    </div>
+    <div class="footer">
+        &copy; Copyright 2014, Deepak Chandan.
+      Created using <a href="http://sphinx-doc.org/">Sphinx</a> 1.2.3.
+    </div>
+  </body>
+</html>
