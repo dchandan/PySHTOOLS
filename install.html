@@ -55,12 +55,12 @@
             
   <div class="section" id="installation">
 <span id="intro"></span><h1>Installation<a class="headerlink" href="#installation" title="Permalink to this headline">¶</a></h1>
-<p>You will require a Fortran compiler such as the freely available <a class="reference external" href="https://gcc.gnu.org/wiki/GFortran">gfortran</a> and <a class="reference external" href="http://docs.scipy.org/doc/numpy-dev/f2py/">F2Py</a>. A copy of the relevant source files from SHTOOLS is included in PySHTOOLS so you don&#8217;t need to install SHTOOLS separately in order to install PySHTOOLS.</p>
+<p>You will require a Fortran compiler such as the freely available <a class="reference external" href="https://gcc.gnu.org/wiki/GFortran">gfortran</a> and <a class="reference external" href="http://docs.scipy.org/doc/numpy-dev/f2py/">F2Py</a>. A copy of the relevant source files from SHTOOLS is included in PySHTOOLS so you <em>don&#8217;t need</em> to install SHTOOLS separately in order to install PySHTOOLS.</p>
 <p>After downloading and unpacking the source code follow these steps:</p>
 <ol class="arabic simple">
 <li>Open terminal, change to the &#8220;shtools&#8221; sub-directory within the PySHTOOLS directory.</li>
-<li>Type <tt class="docutils literal"><span class="pre">make</span></tt>. This will compile the Fortran codes using f2py and gfortran. If you do not have these two executables available in your <tt class="docutils literal"><span class="pre">PATH</span></tt> then this step will produce an error. Note: It is natural for f2py to produce lots of output on the screen. If the compilation is successful you will have a <tt class="docutils literal"><span class="pre">_shtools.so</span></tt> shared library in the top level PySHTOOLS directory.</li>
-<li>Finally to use this library, either move the complete &#8220;PySHTOOLS&#8221; folder to the site-packages directory of your python installation, or if you don&#8217;t want to do that, then add the path to the directory to your PYTHONPATH shell variable.</li>
+<li>Type <tt class="docutils literal"><span class="pre">make</span></tt>. This will compile the Fortran codes using f2py and gfortran. If you do not have these two executables available in your <tt class="docutils literal"><span class="pre">PATH</span></tt> then this step will produce an error. Note: It is natural for f2py to produce lots of output on the screen. If the compilation is successful you will have a <em>_shtools.so</em> shared library in the top level PySHTOOLS directory.</li>
+<li>Finally to use this library, either move the complete &#8220;PySHTOOLS&#8221; folder to the site-packages directory of your python installation, or if you don&#8217;t want to do that, then add the path to the directory to your <tt class="docutils literal"><span class="pre">PYTHONPATH</span></tt> shell variable.</li>
 </ol>
 </div>
 
