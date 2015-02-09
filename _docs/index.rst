@@ -10,11 +10,13 @@ Contents:
 
 .. toctree::
    :maxdepth: 2
-   
+
    intro
    basics
    transformations
-
+   special
+   power
+   misc
 
 
 Indices and tables
@@ -23,4 +25,3 @@ Indices and tables
 * :ref:`genindex`
 * :ref:`modindex`
 * :ref:`search`
-
