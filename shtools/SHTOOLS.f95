@@ -515,20 +515,19 @@ module SHTOOLS
 			real*8, intent(out) ::	spectra(:)
 		end subroutine SHMagPowerSpectrum
 		
-		subroutine SHExpandDHC(grid, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
- 			complex*16, intent(in) ::	grid(:,:)
- 			complex*16, intent(out) ::	cilm(:,:,:)
-			integer, intent(in) ::	n
-			integer, intent(out) ::	lmax
-			integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+		subroutine SHExpandDHC(grid, py_m, py_n, lmax_calc, py_lmax, cilm, lmax, norm, sampling, csphase)
+			integer, intent(in)     ::  py_m, py_n, lmax_calc, py_lmax
+			complex*16, intent(in)  ::	grid(py_m, py_n)
+			complex*16, intent(out) ::	cilm(2, py_lmax+1, py_lmax+1)
+			integer, intent(out)    ::	lmax
+			integer, intent(in), optional :: norm, sampling, csphase			
 		end subroutine SHExpandDHC
 		
-		subroutine MakeGridDHC(griddh, n, cilm, lmax, norm, sampling, csphase, lmax_calc)
-			complex*16, intent(in) :: 	cilm(:,:,:)
-			complex*16, intent(out) ::	griddh(:,:)
-			integer, intent(in) :: 	lmax
-			integer, intent(out) ::	n
-			integer, intent(in), optional :: norm, sampling, csphase, lmax_calc
+		subroutine MakeGridDHC(griddh, py_m, py_n, cilm, lmax, csphase, norm, sampling)
+			integer, intent(in)     :: 	lmax, py_m, py_n, csphase
+			complex*16, intent(in)  :: 	cilm(2, lmax+1, lmax+1)
+			complex*16, intent(out) ::	griddh(py_m, py_n)
+			integer, intent(in), optional :: norm, sampling
 		end subroutine MakeGridDHC
 		
 		subroutine MakeGridGLQC(gridglq, cilm, lmax, plx, zero, norm, csphase, lmax_calc)

@@ -17,7 +17,9 @@ PreCompute.f95     \
 SHExpandLSQ.f95    \
 MakeGridPoint.f95  \
 MakeGridDH.f95     \
-GLQGridCoord.f95
+GLQGridCoord.f95   \
+SHExpandDHC.f95    \
+MakeGridDHC.f95
 
 MODS = FFTW3.o SHTOOLS.o
 
