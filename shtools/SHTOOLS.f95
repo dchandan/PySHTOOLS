@@ -235,16 +235,18 @@ module SHTOOLS
 			real*8, intent(out) ::	dj(:,:,:)
 		end subroutine djpi2
 		
-		subroutine SHrtoc(rcilm, ccilm, degmax, convention, switchcs)
-			real*8, intent(in) :: 	rcilm(:,:,:)
-			real*8, intent(out) :: 	ccilm(:,:,:) 
-			integer, intent(in), optional ::	degmax, convention, switchcs
+		subroutine SHrtoc(rcilm, l1, ccilm, degmax, convention, switchcs)
+			integer, intent(in)           ::    l1, degmax
+			real*8, intent(in)            :: 	rcilm(2,l1+1,l1+1)
+			real*8, intent(out)           ::	ccilm(2,degmax+1,degmax+1) 
+			integer, intent(in), optional ::	convention, switchcs
 		end subroutine SHrtoc
 		
-		subroutine SHctor(ccilm, rcilm, degmax, convention, switchcs)
-			real*8, intent(in) :: 	ccilm(:,:,:)
-			real*8, intent(out) :: 	rcilm(:,:,:)
-			integer, intent(in), optional ::	degmax, convention, switchcs
+		subroutine SHctor(ccilm, l1, rcilm, degmax, convention, switchcs)
+			integer, intent(in) :: l1, degmax
+			real*8, intent(in) :: ccilm(2,l1+1,l1+1)
+			real*8, intent(out) :: rcilm(2,degmax+1,degmax+1)
+			integer, intent(in), optional :: convention, switchcs
 		end subroutine SHctor
 		
 		subroutine SHCilmToCindex(cilm, cindex, degmax)

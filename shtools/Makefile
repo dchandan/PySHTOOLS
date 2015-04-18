@@ -19,7 +19,8 @@ MakeGridPoint.f95  \
 MakeGridDH.f95     \
 GLQGridCoord.f95   \
 SHExpandDHC.f95    \
-MakeGridDHC.f95
+MakeGridDHC.f95    \
+SHConvertCoef.f95
 
 MODS = FFTW3.o SHTOOLS.o
 
