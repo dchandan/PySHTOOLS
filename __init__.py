@@ -6,6 +6,6 @@ from MakeGridDH import MakeGridDH
 from MakeGridDHC import MakeGridDHC
 from GLQGridCoord import GLQGridCoord
 from LimitBandwidth import LimitBandwidth
-from SHConvertCoef import SHctor, SHrtoc
+from SHConvertCoef import SHctor, SHrtoc, SHCilmToCindex, SHCindexToCilm
 from power import *
 from legendre import *

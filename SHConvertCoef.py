@@ -1,4 +1,4 @@
-from _shtools import shrtoc, shctor
+from _shtools import shrtoc, shctor, shcilmtocindex, shcindextocilm
 from utilities import *
 import numpy as np
 
@@ -57,4 +57,20 @@ def SHrtoc(rcilm, degmax=None, convention=1, switchcs=0):
         _ccilm[1,:,m] = np.conjugate(_ccilm[0,:,m]) * ((-1.0)**m)
     _ccilm[1,:,0] = 0.0 + 0.0j
     return _ccilm
+
+
+
+def SHCilmToCindex(cilm):
+    s = cilm.shape
+    CheckCILM(s)
+    return shcilmtocindex(cilm)
+
+
+
+def SHCindexToCilm(cindex, degmax):
+    s = cindex.shape
+    assert(len(s) == 2)
+    assert(s[0] == 2)
+    assert(s[1] == (degmax+1)*(degmax+2)/2)
+    return shcindextocilm(degmax, cindex)
 

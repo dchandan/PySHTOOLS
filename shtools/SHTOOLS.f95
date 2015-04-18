@@ -249,16 +249,16 @@ module SHTOOLS
 			integer, intent(in), optional :: convention, switchcs
 		end subroutine SHctor
 		
-		subroutine SHCilmToCindex(cilm, cindex, degmax)
-			real*8, intent(in) :: 	cilm(:,:,:)
-			real*8, intent(out) :: 	cindex(:,:)
-			integer, intent(in), optional ::	degmax
+		subroutine SHCilmToCindex(degmax, cilm, cindex)
+			integer, intent(in)  :: degmax
+			real*8, intent(in)   :: cilm(2, degmax+1, degmax+1)
+			real*8, intent(out)  :: cindex(2, (degmax+1)*(degmax+2)/2)
 		end subroutine SHCilmToCindex
 		
-		subroutine SHCindexToCilm(cindex, cilm, degmax)
-			real*8, intent(out) :: 	cilm(:,:,:)
-			real*8, intent(in) ::	cindex(:,:)
-			integer, intent(in), optional ::	degmax
+		subroutine SHCindexToCilm(degmax, cindex, cilm)
+			integer, intent(in) ::	degmax
+			real*8, intent(out) ::  cilm(2, degmax+1, degmax+1)
+			real*8, intent(in)  ::	cindex(2, (degmax+1)*(degmax+2)/2)
 		end subroutine SHCindexToCilm
 		
 		subroutine SHRotateCoef(x, cof, rcof, dj, lmax)

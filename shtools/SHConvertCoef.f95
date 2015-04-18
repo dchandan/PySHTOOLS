@@ -243,7 +243,7 @@ subroutine SHctor(ccilm, l1, rcilm, degmax, convention, switchcs)
 end subroutine SHctor
 
 
-subroutine SHCilmToCindex(cilm, cindex, degmax)
+subroutine SHCilmToCindex(degmax, cilm, cindex)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This routine will convert a 3D matrix of spherical harmonics indexed as (i, l+1, m+1)
@@ -266,41 +266,15 @@ subroutine SHCilmToCindex(cilm, cindex, degmax)
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	implicit none
-	real*8, intent(in) :: cilm(:,:,:)
-	real*8, intent(out) :: cindex(:,:)
-	integer, intent(in), optional ::	degmax
-	integer :: lmax, l, m, index
+	integer, intent(in)  :: degmax
+	real*8, intent(in)   :: cilm(2, degmax+1, degmax+1)
+	real*8, intent(out)  :: cindex(2, (degmax+1)*(degmax+2)/2)
 	
-	if (present(degmax)) then
-		lmax = degmax
-		if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax + 1 .or. size(cilm(1,1,:)) < lmax+1 ) then
-			print*, "Error --- SHcilmtocindex"
-			print*, "CILM must be dimensioned as (2, DEGMAX+1, DEGMAX+1) where DEGMAX is ", degmax
-			print*, "Input array is dimensioned ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
-			stop
-		elseif (size(cindex(:,1)) < 2 .or. size(cindex(1,:)) < ((lmax+1)*(lmax+2))/2) then
-			print*, "Error --- SHcilmtocindex"
-			print*, "CINDEX must be dimensioned as (2, (DEGMAX+1)*(DEGMAX+2)/2) where DEGMAX is ", degmax
-			print*, "Input array is dimensioned ", size(cindex(:,1)), size(cindex(1,:))
-			stop
-		endif
-	else
-		lmax = min(size(cilm(1,1,:)) - 1, size(cilm(1,:,1)) - 1)
-		if (size(cilm(:,1,1)) < 2) then
-			print*, "Error --- SHcilmtocindex"
-			print*, "CILM must be dimensioned as (2, *, *)."
-			print*, "Input array is dimensioned ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
-			stop
-		elseif (size(cindex(:,1)) < 2 .or. size(cindex(1,:)) <  ((lmax+1)*(lmax+2))/2) then
-			print*, "Error --- SHcilmtocindex"
-			print*, "CINDEX must be dimensioned as (2, (LMAX+1)*(LMAX+2)/2) where LMAX is ", lmax
-			stop
-		endif
-	endif
-	
+	integer  :: l, m, index
+		
 	cindex = 0.0d0
 		
-	do l=0, lmax
+	do l=0, degmax
 		do m=0, l
 			index = (l*(l+1))/2+m+1
 			cindex(1, index) = cilm(1,l+1,m+1)
@@ -311,7 +285,7 @@ subroutine SHCilmToCindex(cilm, cindex, degmax)
 end subroutine SHCilmToCindex
 		
 		
-subroutine SHCindexToCilm(cindex, cilm, degmax)
+subroutine SHCindexToCilm(degmax, cindex, cilm)
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 !
 !	This subroutine will convert a 2D matrix of spherical harmonics indexed as (i, index)
@@ -334,41 +308,15 @@ subroutine SHCindexToCilm(cindex, cilm, degmax)
 !
 !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	implicit none
-	real*8, intent(out) :: cilm(:,:,:)
-	real*8, intent(in) ::	cindex(:,:)
-	integer, intent(in), optional ::	degmax
-	integer :: lmax, l, m, index, n
+	integer, intent(in) ::	degmax
+	real*8, intent(out) ::  cilm(2, degmax+1, degmax+1)
+	real*8, intent(in)  ::	cindex(2, (degmax+1)*(degmax+2)/2)
 	
-	n = size(cindex(1,:))
-
-	if (present(degmax)) then
-		lmax = degmax
-		if (lmax > nint((-3.0d0 + sqrt(1.0d0 + 8.0d0*n) )/2.0d0) ) then
-			print*, "Error - SHcindextocilm"
-			print*, "The output spherical harmonic degree DEGMAX is larger than the input coefficients."
-			print*, "Input value of DEGMAX ", degmax
-			print*, "Maximum spherical harmonic degree of CINDEX ", nint((-3.0d0 + sqrt(1.0d0 + 8.0d0*n) )/2.0d0)
-			stop
-		elseif (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax + 1 .or. size(cilm(1,1,:)) < lmax+1 ) then
-			print*, "Error --- SHcindextocilm"
-			print*, "CILM must be dimensioned as (2, DEGMAX+1, DEGMAX+1) where DEGMAX is ", degmax
-			print*, "Input array is dimensioned ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
-			stop
-		endif
-	else	
-		lmax = nint((-3.0d0 + sqrt(1.0d0 + 8.0d0*n) )/2.0d0)
-		
-		if (size(cilm(:,1,1)) < 2 .or. size(cilm(1,:,1)) < lmax + 1 .or. size(cilm(1,1,:)) < lmax+1 ) then
-			print*, "Error --- SHcindextocilm"
-			print*, "CILM must be dimensioned as (2, DEGMAX+1, DEGMAX+1) where DEGMAX is ", degmax
-			print*, "Input array is dimensioned ", size(cilm(:,1,1)), size(cilm(1,:,1)), size(cilm(1,1,:))
-			stop
-		endif
-	endif
+	integer :: l, m, index
 	
 	cilm = 0.0d0
 		
-	do l=0, lmax
+	do l=0, degmax
 		do m=0, l
 			index = (l*(l+1))/2+m+1
 			cilm(1,l+1,m+1) = cindex(1, index)
